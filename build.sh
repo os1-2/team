@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 수정날짜: 2020/10/05
+# 수정날짜: 2020/10/14
 
 # 사용법
 # ./build.sh (option)
@@ -339,9 +339,13 @@ function install_basicapp(){
     exit 1
   fi
 
-  #webview install
+  #basicapp install
   cd ./basicapp_tai
-  tar -xvf * -C /system/app/
+  tar -xvf calculator.tai -C /system/app/
+  tar -xvf capturetool.tai -C /system/app/
+  tar -xvf imageviewer.tai -C /system/app/
+  tar -xvf texteditor.tai -C /system/app/
+  tar -xvf tmemo.tai -C /system/app/
   cd ..
   rm -rf basicapp_tai
 }
