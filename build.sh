@@ -180,7 +180,7 @@ function full_debug_build_function(){
   # pkg install
   install_pkg
 
-  if [ "${ARCH}" == "i686" ]; then
+  if [ "${ARCH}" == "x86_64" ]; then
     # webview install
     install_webview
   fi
@@ -201,7 +201,7 @@ function full_release_build_function(){
   # pkg install
   install_pkg
 
-  if [ "${ARCH}" == "i686" ]; then
+  if [ "${ARCH}" == "x86_64" ]; then
     # webview install
     install_webview
   fi
