@@ -180,8 +180,10 @@ function full_debug_build_function(){
   # pkg install
   install_pkg
 
-  # webview install
-  install_webview
+  if [ "${ARCH}" == "i686" ]; then
+    # webview install
+    install_webview
+  fi
 
   # tos build
   tos_debug_build
@@ -199,8 +201,10 @@ function full_release_build_function(){
   # pkg install
   install_pkg
 
-  # webview install
-  install_webview
+  if [ "${ARCH}" == "i686" ]; then
+    # webview install
+    install_webview
+  fi
 
   # tos build
   tos_release_build
