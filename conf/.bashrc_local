@@ -1,0 +1,28 @@
+# user .bashrc
+
+source /usr/share/autojump/autojump.sh
+
+export PATH+=:/system/bin
+
+export TUK_HOME=~/master
+export TL_HOME=/rsmdata
+
+alias lsps='ps ax | grep $1'
+alias normal='lxc-attach -n normal'
+alias gr='gr'
+alias ma='make install -j'
+
+gr() {
+  grep -rnIi "$1" . --color;
+}
+
+code_exchange() {
+    grep -rl --include="*.[ch]" $1 . | xargs sed -i 's/'$1'/'$2'/g'
+}
+alias exch='code_exchange'
+
+export LANG='ko_KR.UTF-8'
+export LC_ALL='ko_KR.UTF-8'
+source /usr/share/autojump/autojump.sh
+
+export ASAN_SYMBOLIZER_PATH='/usr/lib/llvm-3.8/bin/llvm-symbolizer'
