@@ -4,15 +4,16 @@
 
 # 사용법
 # ./build.sh (option)
-# 0) ./buils.sh env     -> 최초 tos build 환경 설정
-# 1) ./build.sh tos     -> only tos_build 빌드
-# 2) ./build.sh toc     -> only toc_build 빌드
-# 3) ./build.sh full    -> pkg, tos, toc 빌드
-# 4) ./build.sh clean   -> clean 빌드
-# 5) ./buils.sh remove  -> binary 제거
-# 6) ./buils.sh togate  -> togate 설치(version 수정필요)
-# 7) ./buils.sh gtest   -> gtest 설치
-# 8) ./buils.sh webview -> webview 설치
+# 0) ./buils.sh env       -> 최초 tos build 환경 설정
+# 1) ./build.sh tos       -> only tos_build 빌드
+# 2) ./build.sh toc       -> only toc_build 빌드
+# 3) ./build.sh full      -> pkg, tos, toc 빌드
+# 4) ./build.sh clean     -> clean 빌드
+# 5) ./buils.sh remove    -> binary 제거
+# 6) ./buils.sh togate    -> togate 설치(version 수정필요)
+# 7) ./buils.sh gtest     -> gtest 설치
+# 8) ./buils.sh webview   -> webview 설치
+# 8) ./buils.sh basicapp  -> basicapp 설치
 
 
 # TOS_PATH 수정 필수!!!!!!
@@ -316,6 +317,36 @@ function install_webview(){
   rm -rf webview.tai
 }
 
+function install_basicapp(){
+  ADDRESS="togate@192.168.12.50"
+  PASSWORD="tmaxos123!"
+  VERSION="latest"
+
+  if [ "${ARCH}" == "i686" ]; then
+    echo -e "\033[31m"
+    echo "BasicApp no support i386"
+    echo -e "\033[0m"
+    exit 1
+  else
+    mkdir basicapp_tai
+    sshpass -p${PASSWORD} scp -o StrictHostKeyChecking=no -P 12369 ${ADDRESS}:~/package_basicapp/amd64/${VERSION}/* ./basicapp_tai
+  fi
+
+  if [ $? -ne 0 ]; then
+    echo -e "\033[31m"
+    echo "Fail to download basicapp"
+    echo -e "\033[0m"
+    exit 1
+  fi
+
+  #webview install
+  cd ./basicapp_tai
+  tar -xvf * -C /system/app/
+  cd ..
+  rm -rf basicapp_tai
+}
+
+
 if [ "$1" == "full" ]; then
   echo -n "Do you want full build? (debug:d / release:r)(d/r)"
   read input
@@ -398,6 +429,14 @@ if [ "$1" == "webview" ]; then
   read input
   if [ $input == "Y" ] || [ $input == "y" ]; then
     install_webview
+  fi
+fi
+
+if [ "$1" == "basicapp" ]; then
+  echo -n "Do you want to install BasicApp? (Y/N)"
+  read input
+  if [ $input == "Y" ] || [ $input == "y" ]; then
+    install_basicapp
   fi
 fi
 
