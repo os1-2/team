@@ -69,23 +69,6 @@ function tos_debug_build(){
   cd ~/tos_build/binary_debug/
   make install -j8
 
-  cd ~/tos_build/binary_debug/src/core
-  make install -j8
-  cd ~/tos_build/binary_debug/src/lib/tgk
-  make install -j8
-  cd ~/tos_build/binary_debug/src/lib
-  make install -j8
-  cd ~/tos_build/binary_debug/src/lib/t2d
-  make install -j8
-  cd ~/tos_build/binary_debug/src/lib/cop_common/
-  make install -j8
-  cd ~/tos_build/binary_debug/src/gk_repo
-  make install -j8
-  cd ~/tos_build/binary_debug/src/res_pak
-  make install -j8
-  cd ~/tos_build/binary_debug/
-  make install -j8
-
   # 이제 걸리면, 진짜 문제 생겨서 안되는 거임. 
   if [ $? -ne 0 ]; then
     echo -e "\033[31m"
@@ -125,22 +108,7 @@ function tos_release_build(){
     exit 1
   fi
 
-  cd ~/tos_build/binary_release/
-  make install -j8
-  cd ~/tos_build/binary_release/src/core
-  make install -j8
-  cd ~/tos_build/binary_release/src/lib/tgk
-  make install -j8
-  cd ~/tos_build/binary_release/src/lib
-  make install -j8
-  cd ~/tos_build/binary_release/src/lib/t2d
-  make install -j8
-  cd ~/tos_build/binary_release/src/lib/cop_common
-  make install -j8
-  cd ~/tos_build/binary_release/src/gk_repo
-  make install -j8
-  cd ~/tos_build/binary_release/src/res_pak
-  make install -j8
+
   cd ~/tos_build/binary_release/
   make install -j8
 
@@ -181,11 +149,6 @@ function full_debug_build_function(){
   # pkg install
   install_pkg
 
-  if [ "${ARCH}" == "x86_64" ]; then
-    # webview install
-    install_webview
-  fi
-
   # tos build
   tos_debug_build
 
@@ -201,11 +164,6 @@ function full_release_build_function(){
 
   # pkg install
   install_pkg
-
-  if [ "${ARCH}" == "x86_64" ]; then
-    # webview install
-    install_webview
-  fi
 
   # tos build
   tos_release_build
@@ -232,8 +190,10 @@ function remove_output_binary_debug(){
       exit 1
     fi
     rm -rf *
+    git clean -xdf
     git reset --hard HEAD
-    git submodule update
+    git submodule sync --recursive
+    git submodule update --init --recursive --force
     rm -rf /system /tos /rsmdata /windata ~/toc_build ~/tos_build
 }
 
@@ -253,8 +213,10 @@ function remove_output_binary_release(){
       exit 1
     fi
     rm -rf *
+    git clean -xdf
     git reset --hard HEAD
-    git submodule update
+    git submodule sync --recursive
+    git submodule update --init --recursive --force
     rm -rf /system /tos /rsmdata /windata ~/toc_build ~/tos_build
 }
 
